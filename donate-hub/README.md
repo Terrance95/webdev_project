@@ -1,16 +1,16 @@
-# React + Vite
+# ProofStake
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ProofStake is a Vite + React peer-verification arena. Players stake demo points on challenges, submit image receipts, and review one another's proof.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Install the dependencies from the existing lockfile with `npm ci`.
+2. Set `VITE_SUPABASE_URL` and either `VITE_SUPABASE_ANON_KEY` or `VITE_SUPABASE_PUBLISHABLE_KEY` in `.env`.
+3. Run `supabase_setup.sql` in the Supabase SQL Editor if the ProofStake schema and `ps-proof-images` bucket are not already provisioned.
+4. Start the app with `npm run dev`.
 
-## React Compiler
+The app uses only `ps_profiles`, `ps_challenges`, `ps_participants`, `ps_proofs`, `ps_verifications`, and the `ps-proof-images` bucket.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Prototype security limitation
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Player identity is a username and a profile ID stored in the browser, not authenticated identity. The public policies in `supabase_setup.sql` allow anonymous clients to modify demo records and balances. Stakes are not money and this setup must not be used for real funds or sensitive data. Use Supabase Auth and server-side, transactional operations before deploying a production arena.
